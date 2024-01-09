@@ -12,11 +12,13 @@ CZERWONY = (255, 0, 0)
 NIEBIESKI = (0, 0, 255)
 
 szerokoscOkna = 700
-wysokoscOkna = 500
+wysokoscOkna = 700
 rozmiar = (szerokoscOkna, wysokoscOkna)
 ekran = pygame.display.set_mode(rozmiar)
 pygame.display.set_caption('Galaxy')
 tlo = pygame.image.load('photos/kosmos.png')
+
+ENEMIES = ["photos/enemyGreen1.png","photos/enemyBlue1.png","photos/enemyRed1.png"]
 
 KONIEC = False
 
@@ -48,7 +50,7 @@ class Pocisk(Sprite):
 class Przeciwnicy(Sprite):
     def __init__(self):
         super().__init__(0, 0, 0, 0, 0, 0)
-        self.kostium = pygame.image.load("photos/enemyGreen1.png")
+        self.kostium = pygame.image.load(ENEMIES[random.randrange(0,3)])
         self.szer = self.kostium.get_width()
         self.wys = self.kostium.get_height()
 
@@ -58,7 +60,7 @@ class Przeciwnicy(Sprite):
 
 gracz = Gracz()
 gracz.x = 330
-gracz.y = 350
+gracz.y = 550
 
 pociski = []
 
@@ -205,14 +207,14 @@ while GRA:
                 nowy.x = random.randrange(0, szerokoscOkna - nowy.szer)
                 nowy.vy = 3
                 przeciwnicy.append(nowy)
-            if globalny_licznik > 600:
+            if globalny_licznik > 400:
                 przyspieszenie += 1
                 globalny_licznik = 0
-            if przyspieszenie == 60: przyspieszenie == 30
+            if przyspieszenie == 45: przyspieszenie == 20
             zycie = 20
             przepuszczeni = 0
             for i in przeciwnicy:
-                if i.y > 500: przepuszczeni += 1
+                if i.y > 700: przepuszczeni += 1
             zycie = zycie - przepuszczeni
 
             if zycie <= 0:
@@ -225,8 +227,6 @@ while GRA:
 
             ekran.fill(CZARNY)
             ekran.blit(tlo, (0, 0))
-            wyswietlPasek()
-            wystwietlZycie()
             gracz.rysuj()
 
             for pocisk in pociski:
@@ -234,6 +234,9 @@ while GRA:
 
             for statek in przeciwnicy:
                 statek.rysuj()
+
+            wyswietlPasek()
+            wystwietlZycie()
 
             pygame.display.flip()
 
